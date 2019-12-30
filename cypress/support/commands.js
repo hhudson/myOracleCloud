@@ -23,3 +23,19 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+Cypress.Commands.add("handleModal", () => {
+  cy.get(".ui-dialog").invoke("css", "height", "500px");
+  cy.get("iframe").then(iframe => {
+    return new Cypress.Promise(resolve => {
+      iframe.on("load", () => {
+        resolve(iframe.contents().find("body"));
+      });
+    });
+  });
+});
+Cypress.Commands.add("getIframeDom", () => {
+  cy.get("iframe")
+    .invoke("contents")
+    .invoke("find", "body")
+    .then(cy.wrap);
+});
